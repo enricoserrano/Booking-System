@@ -1,0 +1,106 @@
+/* Enrico Serrano 19071299 
+This script contains the designing elements I used for the website
+*/
+body {
+    font-family: Verdana, sans-serif;
+    text-align: center;
+	background: #f0ede3;
+}
+input[type=reset] {
+    background-color: rgba(255, 255, 255, 0);
+    color: black;
+    border: 2px solid #474747;
+    width: 6rem;
+    height: 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+    border-radius: 4px;
+}
+input[type=reset]:hover {
+    background-color: #555555;
+    color: white;
+}
+input[type=button] {
+    background-color: #619477;
+    color: black;
+    border: 2px solid #000000;
+    width: 6rem;
+    height: 2rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 3px 10px 0 rgba(0,0,0,0.19);
+    border-radius: 4px;
+}
+input[type=button]:hover {
+    background-color: #555555;
+    color: white;
+}
+button[disabled]:active, button[disabled],
+input[type="button"][disabled]:active,
+input[type="button"][disabled],
+input[type="submit"][disabled]:active,
+input[type="submit"][disabled] ,
+button[disabled]:hover,
+input[type="button"][disabled]:hover,
+input[type="submit"][disabled]:hover
+{
+  border: 2px outset ButtonFace;
+  color: GrayText;
+  cursor: inherit;
+  background-color: #ddd;
+  background: #ddd;
+}
+#content {
+    padding-top: 1%;
+    display: flex;
+    justify-content: center;
+}
+
+thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+th, td {
+    padding: 12px 15px;
+}
+tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid #000000;
+}
+tbody tr.active-row {
+    font-weight: bold;
+    color: #000000;
+}
+input[type=text] {
+    padding:5px;
+    border-radius:5px;
+}
+input[type=date] {
+    border-radius:5px;
+}
+input[type=time] {
+    border-radius:5px;
+}
+#button{  
+    text-decoration: none;  
+    color: #FFF;  
+    background-color: #5b6ccc;  
+    padding: 5px 20px;  
+    border-radius: 3px;  
+}  
+#button:hover{  
+    background-color: #3c4888;   
+}  
+#buttondisabled{  
+    pointer-events: none;
+    text-decoration: none;  
+    color: #FFF;  
+    background-color: #6e6e6e;  
+    padding: 5px 20px;  
+    border-radius: 3px;  
+}  

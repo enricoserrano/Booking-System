@@ -1,0 +1,48 @@
+//Enrico Serrano 19071299
+//This is all the commands I used for the database creation, insertion and queries.
+
+//Table Creation
+CREATE TABLE bookingTable (
+    bookingid VARCHAR(20) PRIMARY KEY, 
+    cname VARCHAR(50), phone INT(12), 
+    unumber VARCHAR(10), snumber INT(4), 
+    stname VARCHAR(50), sbname VARCHAR(50), 
+    dsbname VARCHAR(50), 
+    pickupdatetime DATETIME, 
+    bookingstatus VARCHAR(20) DEFAULT 'Unassigned');
+
+//Check Table
+SELECT * from `bookingTable`;
+
+//Data Insertion (Booking)
+INSERT INTO `bookingTable` (
+    `bookingid`, 
+    `cname`, 
+    `phone`, 
+    `unumber`, 
+    `snumber`, 
+    `stname`, 
+    `sbname`, 
+    `dsbname`, 
+    `pickupdatetime`) 
+    VALUES ('$countIndexString',
+    '$cname', 
+    '$phone', 
+    '$unumber', 
+    '$snumber', 
+    '$stname', 
+    '$sbname', 
+    '$dsbname', 
+    '$date + $time');
+
+//Query to generate a booking reference ID
+SELECT `bookingid` from  `bookingTable` ORDER BY `bookingid` DESC LIMIT 1;
+
+//Query to display booking result (if it matches an entry from database)
+SELECT * from `bookingTable` where `bookingid` = '$bsearch';
+
+//Query to display booking result (within 2 hours of current time)
+SELECT  * from `bookingTable` where `pickupdatetime` between NOW() and (NOW() + INTERVAL 2 HOUR) AND `bookingstatus` = 'Unassigned';
+
+//Updating the booking status from the Table
+UPDATE `bookingTable` SET `bookingstatus` = 'Assigned' WHERE `bookingid` = '$bookingid';

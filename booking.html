@@ -1,0 +1,261 @@
+<!-- Enrico Serrano 19071299-->
+<!-- booking.html contains the form of the booking, it has a proper validation, and sends data into booking php-->
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Booking</title>
+      <script type="text/javascript" src="xhr.js"></script>
+      <script type="text/javascript" src="bookingajax.js"> </script>
+      <link rel = "stylesheet" type = "text/css" href = "styles.css"/>
+   </head>
+   <body>
+      <a href="http://cqp5107.cmslamp14.aut.ac.nz/assign2/booking.html" class="indexsearch-button">Create Booking</a>
+      <a href="http://cqp5107.cmslamp14.aut.ac.nz/assign2/admin.html" class="indexpost-button">Admin Page</a>
+      <h1>Create a Booking</h1>
+      <form>
+         <p>
+            <label>Customer Name</label>
+            <input type="text" name="cname" id="cname" onblur="verify()">
+         </p>
+         <p>
+            <label>Phone Number</label>
+            <input type="text" name="phone"  id="phone" onblur="verify()">
+         </p>
+         <p>
+            <label>Unit Number</label>
+            <input type="text" name="unumber" id="unumber" onblur="verify()">
+         </p>
+         <p>
+            <label>Street Number</label>
+            <input type="text" name="snumber" id="snumber" onblur="verify()">
+         </p>
+         <p>
+            <label>Street Name</label>
+            <input type="text" name="stname" id="stname" onblur="verify()">
+         </p>
+         <p>
+            <label>Suburb</label>
+            <input type="text" name="sbname" id="sbname" onblur="verify()">
+         </p>
+         <p>
+            <label>Destination Suburb</label>
+            <input type="text" name="dsbname" id="dsbname" onblur="verify()">
+         </p>
+         <p>
+            <label>Pickup Date</label>
+            <input type="date" name="date" id="showcurrentDate" onkeydown="return false" onchange="handler(event);">
+         </p>
+         <p>
+            <label>Pickup Time</label>
+            <input type="time" name="time" id="showcurrentTime" onkeydown="return false" onchange="handler(event);">
+         </p>
+         <!-- The getdata function is ran after the button is clicked, this is to show the receipt of the booking request made by the user within the same page-->
+         <input id="submit" name="submit" type="button" onClick = "getData('booking.php','targetDiv', cname.value, phone.value, unumber.value, snumber.value, stname.value, sbname.value, dsbname.value, date.value, time.value) " value ="Submit">
+      </form>
+      <div id="targetDiv">
+         <p>Booking Information will be displayed here</p>
+      </div>
+      <script>
+         //Gets the current system date
+         var date = new Date();
+         //Formats the date
+         var getcurrentDate = date.toISOString().substring(0,10);
+         //Deconstruct date and saves it into hours and minutes respectively
+         var getcurrenthour = date.getHours();
+         var getcurrentmin  = date.getMinutes();
+         
+         //Formats date
+         getcurrenthour = (getcurrenthour < 10 ? "0" : "") + getcurrenthour;
+         getcurrentmin = (getcurrentmin < 10 ? "0" : "") + getcurrentmin;
+         getdisplayTime = getcurrenthour + ":" + getcurrentmin; 
+         
+         //Displays the current system date and time when the form loads
+         document.getElementById('showcurrentDate').value = getcurrentDate;
+         document.getElementById('showcurrentTime').value = getdisplayTime;
+         
+         function handler(e) {
+             var pickupDate = document.getElementById("showcurrentDate").value;
+             var pickupTime = document.getElementById("showcurrentTime").value;
+             var pickupDateTime = pickupDate + "T" + pickupTime + ":00";
+             var pickupDateObject = new Date(pickupDateTime);
+         
+             if (pickupDateObject < new Date()) {
+                 alert("Invalid! you must choose a date or time that is later or equal to todays current date and time");
+                 document.getElementById('showcurrentDate').value = getcurrentDate;
+                 document.getElementById('showcurrentTime').value = getdisplayTime;
+             }
+         }
+         
+         //Intialising variable to check if all inputs are validated within the form
+         let validcname = new Boolean(false);
+         let validphone = new Boolean(false);
+         let validunumber = new Boolean(true);
+         let validsnumber= new Boolean(false);
+         let validstname = new Boolean(false);
+         let validsbname = new Boolean(true);
+         let validdsbname= new Boolean(true);
+         let validAll = new Boolean(false);
+         
+         //Checks if input contains a number 
+         function stringContainsNumber(string) {
+             return /\d/.test(string);
+         }
+         //Checks if input contains a letter
+         function stringContainsLetters(string) {
+             return /[a-zA-Z]/.test(string);
+         }
+         //Checks if input contains a special character
+         function stringContainsSpecial(string) {
+             return /^[0-9a-zA-Z \b]+$/.test(string);
+         }
+         
+         //Disables the button at the start until the user has input correct information
+         document.getElementById('submit').disabled = true;
+         
+         //Checks if customer name if it is null, empty, contains a number, or special character and alerts the user. This Function is called everytime theres a change in the field
+         document.getElementById('cname').addEventListener('keyup', e => {
+             let matchPattern = e.target.value.match(/[a-zA-Z\s]+/);
+             if (e.target.value == "" || matchPattern == null) {
+                 alert("Name must not contain a number or special characters");
+                 e.target.value = null;
+                 validcname = false;
+                 validAll = false;
+             }
+             else {
+                 if(stringContainsNumber(e.target.value) == true || stringContainsSpecial(e.target.value) == false) {
+                     alert("Name must not contain a number or special characters");
+                     e.target.value = null;
+                     validcname = false;
+                     validAll = false;
+                 } else {
+                     validcname = true;
+                 }
+             }
+         });
+         
+         //Checks if phone if it is null, empty, contains a letter, or special character and alerts the user. This Function is called everytime theres a change in the field
+         document.getElementById('phone').addEventListener('keyup', e => {
+             let matchPattern = e.target.value.match(/[0-9]/);
+             if (e.target.value == "" || matchPattern == null) {
+                 alert("Phone number must not contain letters");
+                 e.target.value = null;
+                 validphone = false;
+                 validAll = false;
+             }
+             else {
+                 if(stringContainsLetters(e.target.value) == true || stringContainsSpecial(e.target.value) == false ) {
+                     alert("Phone number must not contain letters");
+                     e.target.value = null;
+                     validphone = false;
+                     validAll = false;
+                 } else {
+                     validphone = true;
+                 }
+         
+             }
+         });
+         
+         //Checks if unumber contains special character and alerts the user. This Function is called everytime theres a change in the field since it is optional, validation is disabled if field is empty
+         document.getElementById('unumber').addEventListener('keyup', e => {
+             if(stringContainsSpecial(e.target.value) == false) {
+                 alert("Unit number must not special characters");
+                 e.target.value = null;
+                 validunumber = true;
+             } else {
+                 validunumber = true;
+             }
+         });
+         
+         //Checks if unumber contains special character and alerts the user. This Function is called everytime theres a change in the field since it is optional, validation is disabled if field is empty
+         document.getElementById('snumber').addEventListener('keyup', e => {
+             if (e.target.value == "") {
+                 alert("Street Number should not contain letters and a length between 1-4");
+                 e.target.value = null;
+                 validsnumber = false;
+                 validAll = false;
+             }
+             else {
+                 if(stringContainsSpecial(e.target.value) == false || stringContainsLetters(e.target.value) == true) {
+                     alert("Street Number should not contain letters and a length between 1-4");
+                     e.target.value = null;
+                     validsnumber = false;
+                     validAll = false;
+                 } else {
+                     validsnumber = true;
+                 }
+         
+             }
+         });
+         
+         //Checks if stname if it is null, empty, contains a number, or special character and alerts the user. This Function is called everytime theres a change in the field
+         document.getElementById('stname').addEventListener('keyup', e => {
+             let matchPattern = e.target.value.match(/[a-zA-Z\s]+/);
+             //Check for the input's value
+             if (e.target.value == "" || matchPattern == null) {
+                 alert("Street Name must not contain a number or special characters");
+                 e.target.value = null;
+                 validstname = false;
+                 validAll = false;
+             }
+             else {
+                 if(stringContainsNumber(e.target.value) == true || stringContainsSpecial(e.target.value) == false) {
+                     alert("Street Name must not contain a number or special characters");
+                     e.target.value = null;
+                     validstname = false;
+                     validAll = false;
+                 } else {
+                     validstname = true;
+         
+                 }
+         
+             }
+         });
+         
+         //Checks if sbname contains special character or a number and alerts the user. This Function is called everytime theres a change in the field since it is optional, validation is disabled if field is empty
+         document.getElementById('sbname').addEventListener('keyup', e => {
+             if(stringContainsNumber(e.target.value) == true || stringContainsSpecial(e.target.value) == false ) {
+                 alert("Suburb must not contain a number or special characters");
+                 e.target.value = null;
+                 validsbname = true;
+             } else {
+                 validsbname = true;
+         
+             }
+         });
+         
+         //Checks if dsbname contains special character or a number alerts the user. This Function is called everytime theres a change in the field since it is optional, validation is disabled if field is empty
+         document.getElementById('dsbname').addEventListener('keyup', e => {
+             if(stringContainsNumber(e.target.value) == true || stringContainsSpecial(e.target.value) == false) {
+                 alert("Destination Suburb must not contain a number or special characters");
+                 e.target.value = null;
+                 validdsbname = true;
+             } else {
+                 validdsbname = true;
+             }
+         
+         });
+         function verify() {
+             if (validcname == true && validphone == true && validunumber == true && validsnumber == true && validstname == true && validsbname == true && validdsbname == true) {
+                 if(document.getElementById('phone').value.length < 10 || document.getElementById('phone').value.length > 12 ) {
+                     validAll = false;
+                     alert("Phone number length has to be between 10-12");
+                 } else {
+                     validAll = true;
+                 }
+         
+             } else {
+                 validAll = false;
+             }
+         
+             if (validAll == true) {
+                 document.getElementById('submit').disabled = false;
+             } else {
+                 document.getElementById('submit').disabled = true;
+             }
+         }
+      </script>
+   </body>
+</html>

@@ -1,0 +1,33 @@
+<!-- Enrico Serrano 19071299-->
+<!-- admin.html displays the searching form for the admin, once the admin has entered a booking reference, it will match their input against database entries -->
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Admin</title>
+      <script type="text/javascript" src="xhr.js"></script>
+      <script type="text/javascript" src="adminajax.js"> </script>
+      <link rel = "stylesheet" type = "text/css" href = "styles.css"/>
+   </head>
+   <body>
+      <a href="http://cqp5107.cmslamp14.aut.ac.nz/assign2/booking.html" class="indexsearch-button">Create Booking</a>
+      <a href="http://cqp5107.cmslamp14.aut.ac.nz/assign2/admin.html" class="indexpost-button">Admin Page</a>
+      <h1>Booking Request</h1>
+      <div id="message">
+         <p></p>
+      </div>
+      <form>
+         <p>
+            <label>Customer Name</label>
+            <input type="text" name="bsearch">
+         </p>
+         <!-- The getdata function is called from the admin.php to show the query result and prints within the same page, it also sends the field text value and matches it from the database -->
+         <input id="submit" name="sbutton" type="button" onClick = "getData('admin.php','content', bsearch.value) " value ="Submit">
+      </form>
+      <div id="content">
+         <p>Query Result will be displayed here</p>
+      </div>
+   </body>
+</html>
