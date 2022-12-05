@@ -27,3 +27,5 @@ How to search for booking
 6. If the field is left empty and 'submit' button is pressed, and there are no booking entries within 2 hours within the current time, it will show an alert to the user
 7. You may assign the booking by clicking the 'Assign' button
 8. A confirmation message is displayed and updated table information is also displayed
+
+## Screenshots
